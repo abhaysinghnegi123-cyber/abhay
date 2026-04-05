@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCQ Slot App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>MCQ Slot App</h1>
+    <p class="subtitle">Teacher and Student login with slot-wise MCQ sets.</p>
+    <p id="cloudStatus" class="muted"></p>
+
+    <section id="loginSection" class="card login-shell">
+      <div class="spotify-glow glow-left"></div>
+      <div class="spotify-glow glow-right"></div>
+      <h2>Welcome Back</h2>
+      <p class="muted">Sign in to continue</p>
+      <form id="loginForm">
+        <label for="role">Role</label>
+        <select id="role" required>
+          <option value="">Select role</option>
+          <option value="teacher">Teacher</option>
+          <option value="student">Student</option>
+        </select>
+
+        <label for="username">Username</label>
+        <input id="username" type="text" required />
+
+        <label for="password">Password</label>
+        <div class="password-row">
+          <input id="password" type="password" required />
+          <button id="togglePasswordBtn" type="button" class="secondary">Show</button>
+        </div>
+
+        <button type="submit">Login</button>
+      </form>
+      <p id="loginMessage" class="status-message"></p>
+    </section>
+
+    <section id="teacherSection" class="hidden">
+      <div class="card banner-card">
+        <img src="boy-banner.png" alt="Teacher Banner" class="panel-banner" />
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2><span class="title-icon">🧑‍🏫</span> Teacher Panel</h2>
+          <button id="teacherLogoutBtn" type="button" class="secondary">Logout</button>
+        </div>
+      </div>
+
+      <div class="card dashboard-card">
+        <h3><span class="section-icon">🚀</span> Teacher Dashboard</h3>
+        <div class="dashboard-grid" id="teacherDashGrid">
+          <button type="button" class="dash-tile" data-module="teacherCreateCard">
+            <span class="dash-icon">📁</span>
+            <span class="dash-text">Create Slot</span>
+          </button>
+          <button type="button" class="dash-tile" data-module="teacherQuestionCard">
+            <span class="dash-icon">📝</span>
+            <span class="dash-text">Question Section</span>
+          </button>
+          <button type="button" class="dash-tile" data-module="teacherImportCard">
+            <span class="dash-icon">📥</span>
+            <span class="dash-text">Add File</span>
+          </button>
+          <button type="button" class="dash-tile" data-module="teacherSlotsCard">
+            <span class="dash-icon">📚</span>
+            <span class="dash-text">View Slots</span>
+          </button>
+          <button type="button" class="dash-tile" data-module="teacherEditCard">
+            <span class="dash-icon">✏️</span>
+            <span class="dash-text">Edit Questions</span>
+          </button>
+          <button type="button" class="dash-tile" data-module="teacherBackupCard">
+            <span class="dash-icon">💾</span>
+            <span class="dash-text">Backup Data</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card teacher-module" id="teacherCreateCard">
+        <div class="module-head">
+          <h3><span class="section-icon">📁</span> Create Slot</h3>
+          <button type="button" class="secondary back-dash-btn" data-role="teacher">Back To Dashboard</button>
+        </div>
+        <form id="slotForm">
+          <label for="slotCode">Slot Code</label>
+          <input id="slotCode" type="text" required placeholder="Example: 222" />
+
+          <label for="slotName">Slot Name</label>
+          <input id="slotName" type="text" required placeholder="Example: Class 10 Ch 1 Questions" />
+
+          <button type="submit">Create Slot</button>
+        </form>
+        <p id="slotMessage" class="status-message"></p>
+      </div>
+
+      <div class="card teacher-module hidden" id="teacherQuestionCard">
+        <div class="module-head">
+          <h3><span class="section-icon">📝</span> Add Question To Slot</h3>
+          <button type="button" class="secondary back-dash-btn" data-role="teacher">Back To Dashboard</button>
+        </div>
+        <form id="teacherQuestionForm">
+          <label for="slotSelect">Choose Slot</label>
+          <select id="slotSelect" required></select>
+
+          <label for="questionText">Question</label>
+          <textarea id="questionText" rows="3" required></textarea>
+
+          <div class="options-grid">
+            <div>
+              <label for="optionA">Option A</label>
+              <input id="optionA" type="text" required />
+            </div>
+            <div>
+              <label for="optionB">Option B</label>
+              <input id="optionB" type="text" required />
+            </div>
+            <div>
+              <label for="optionC">Option C</label>
+              <input id="optionC" type="text" required />
+            </div>
+            <div>
+              <label for="optionD">Option D</label>
+              <input id="optionD" type="text" required />
+            </div>
+          </div>
+
+          <label for="correctAnswer">Correct Answer</label>
+          <select id="correctAnswer" required>
+            <option value="">Select correct option</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+
+          <button type="submit">Save Question</button>
+        </form>
+        <p id="questionMessage" class="status-message"></p>
+      </div>
+
+      <div class="card teacher-module hidden" id="teacherImportCard">
+        <div class="module-head">
+          <h3><span class="section-icon">📥</span> Import From Notepad (.txt)</h3>
+          <button type="button" class="secondary back-dash-btn" data-role="teacher">Back To Dashboard</button>
+        </div>
+        <p class="muted">Use blocks with Q, A, B, C, D, ANS. One blank line between questions.</p>
+        <label for="importSlotSelect">Choose Slot</label>
+        <select id="importSlotSelect"></select>
+        <label for="txtImportFile">Select Notepad File</label>
+        <input id="txtImportFile" type="file" accept=".txt,text/plain" />
+        <div class="actions top-gap">
+          <button id="importTxtBtn" type="button">Import Questions</button>
+        </div>
+        <p id="importMessage" class="status-message"></p>
+      </div>
+
+      <div class="card teacher-module hidden" id="teacherSlotsCard">
+        <div class="card-header">
+          <h3><span class="section-icon">📚</span> Slots And Questions</h3>
+          <button id="clearAllBtn" type="button" class="danger">Clear All Slots</button>
+        </div>
+        <div class="actions top-gap">
+          <button type="button" class="secondary back-dash-btn" data-role="teacher">Back To Dashboard</button>
+        </div>
+        <div id="teacherSlotList" class="saved-list"></div>
+      </div>
+
+      <div class="card teacher-module hidden" id="teacherEditCard">
+        <div class="module-head">
+          <h3><span class="section-icon">✏️</span> Edit Questions</h3>
+          <button type="button" class="secondary back-dash-btn" data-role="teacher">Back To Dashboard</button>
+        </div>
+        <label for="editSlotSelect">Choose Slot</label>
+        <select id="editSlotSelect"></select>
+        <label for="editQuestionSelect">Choose Question</label>
+        <select id="editQuestionSelect"></select>
+        <label for="editQuestionText">Question</label>
+        <textarea id="editQuestionText" rows="3"></textarea>
+        <div class="options-grid">
+          <div>
+            <label for="editOptionA">Option A</label>
+            <input id="editOptionA" type="text" />
+          </div>
+          <div>
+            <label for="editOptionB">Option B</label>
+            <input id="editOptionB" type="text" />
+          </div>
+          <div>
+            <label for="editOptionC">Option C</label>
+            <input id="editOptionC" type="text" />
+          </div>
+          <div>
+            <label for="editOptionD">Option D</label>
+            <input id="editOptionD" type="text" />
+          </div>
+        </div>
+        <label for="editCorrectAnswer">Correct Answer</label>
+        <select id="editCorrectAnswer">
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+        </select>
+        <div class="actions top-gap">
+          <button id="saveEditBtn" type="button">Save Changes</button>
+          <button id="deleteQuestionBtn" type="button" class="danger">Delete Question</button>
+        </div>
+        <p id="editMessage" class="status-message"></p>
+      </div>
+
+      <div class="card teacher-module hidden" id="teacherBackupCard">
+        <div class="module-head">
+          <h3><span class="section-icon">💾</span> Backup And Restore</h3>
+          <button type="button" class="secondary back-dash-btn" data-role="teacher">Back To Dashboard</button>
+        </div>
+        <p class="muted">Use this before turning off device or changing browser.</p>
+        <div class="actions top-gap">
+          <button id="exportBackupBtn" type="button">Export Slots JSON</button>
+        </div>
+        <label for="importBackupFile">Restore From JSON</label>
+        <input id="importBackupFile" type="file" accept=".json,application/json" />
+        <div class="actions top-gap">
+          <button id="importBackupBtn" type="button">Import Backup</button>
+        </div>
+        <p id="backupMessage" class="status-message"></p>
+      </div>
+    </section>
+
+    <section id="studentSection" class="hidden">
+      <div class="card banner-card">
+        <img src="girl-banner.jpg" alt="Student Banner" class="panel-banner" />
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2><span class="title-icon">🎓</span> Student Panel</h2>
+          <button id="studentLogoutBtn" type="button" class="secondary">Logout</button>
+        </div>
+      </div>
+
+      <div class="card dashboard-card">
+        <h3><span class="section-icon">⚡</span> Student Dashboard</h3>
+        <div class="dashboard-grid" id="studentDashGrid">
+          <button type="button" class="dash-tile" data-module="studentSlotCard">
+            <span class="dash-icon">🧭</span>
+            <span class="dash-text">Choose Slot</span>
+          </button>
+          <button type="button" class="dash-tile" data-module="studentQuizCard">
+            <span class="dash-icon">🧠</span>
+            <span class="dash-text">Hop Into Quiz</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card student-module" id="studentSlotCard">
+        <div class="module-head">
+          <h3><span class="section-icon">🧭</span> Select Slot</h3>
+          <button type="button" class="secondary back-dash-btn" data-role="student">Back To Dashboard</button>
+        </div>
+        <select id="studentSlotSelect"></select>
+        <div class="actions top-gap">
+          <button id="refreshStudentSlotsBtn" type="button" class="secondary">Refresh Slots</button>
+        </div>
+      </div>
+
+      <div class="card student-module hidden" id="studentQuizCard">
+        <div class="module-head">
+          <h3><span class="section-icon">🧠</span> Quiz</h3>
+          <button type="button" class="secondary back-dash-btn" data-role="student">Back To Dashboard</button>
+        </div>
+        <form id="studentForm"></form>
+        <div id="studentPreview" class="student-preview"></div>
+        <div class="actions top-gap">
+          <button id="prevQuestionBtn" type="button" class="secondary">Previous Question</button>
+          <button id="submitQuizBtn" type="button">Submit Quiz</button>
+        </div>
+        <div id="resultBox" class="result-box"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
